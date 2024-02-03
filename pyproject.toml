@@ -1,0 +1,34 @@
+[tool.poetry]
+name = "personal budget"
+version = "0.1.0"
+description = ""
+authors = ["Dmitry Shoytov <shoytov@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+orjson = "^3.9.12"
+textual = "^0.48.1"
+textual-fspicker = "^0.0.10"
+loguru = "^0.7.2"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.1.1"
+isort = "^5.13.2"
+flake8 = "^7.0.0"
+pytest = "^8.0.0"
+mock = "^5.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+line_length = 100
+profile = "black"
+quiet = true
+src_paths = ["."]
+
+[tool.black]
+line-length = 100
