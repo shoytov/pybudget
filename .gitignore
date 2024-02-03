@@ -312,3 +312,6 @@ kubefwd
 .vscode/
 
 pyrightconfig.json
+
+*.sqlite
+config.json
