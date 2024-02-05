@@ -1,3 +1,5 @@
+from sqlite3 import Cursor
+
 from src.resources.config.manager import ConfigManager
 
 
@@ -28,7 +30,15 @@ class Config:
 
     @db_path.setter
     def db_path(self, path: str) -> None:
-        self.value["db_path"] = path
+        self._value["db_path"] = path
+
+    @property
+    def db_cursor(self):
+        return self._value.get("db_cursor")
+
+    @db_cursor.setter
+    def db_cursor(self, cursor: Cursor) -> None:
+        self._value["db_cursor"] = cursor
 
 
 CONFIG = Config.get_instance()

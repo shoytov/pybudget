@@ -30,6 +30,8 @@ class BudgetApp(App):
         # если в конфиге отсутствует путь к файлу sqlite
         if not CONFIG.db_path:
             self.push_screen(DbWarningScreen(), self.set_db_path_callback())
+        else:
+            DatabaseManager.init_db(CONFIG.db_path)
 
     def compose(self) -> ComposeResult:
         yield Header()

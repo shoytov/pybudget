@@ -1,27 +1,34 @@
 import os
+import sqlite3
 from pathlib import Path
 
 from src.consts import DB_FILE_NAME
 from src.resources.config.manager import ConfigManager
 from src.resources.core import CONFIG
+from src.resources.database.migrations.initial import InitialMigration
 from src.utils.file_utils import check_file_exist, create_file
 
 
 class DatabaseManager:
-    @staticmethod
-    def _get_full_db_path() -> str:
+    @classmethod
+    def _get_full_db_path(cls) -> str:
         return os.path.join(CONFIG.db_path, DB_FILE_NAME)  # type: ignore
 
-    @staticmethod
-    def check_db_exist() -> bool:
-        return check_file_exist(DatabaseManager._get_full_db_path())
+    @classmethod
+    def _apply_migrations(cls) -> None:
+        InitialMigration().execute()
 
-    @staticmethod
-    def initial_migrations() -> None:
-        pass
+    @classmethod
+    def _set_db_connection(cls) -> None:
+        connection = sqlite3.connect(cls._get_full_db_path())
+        CONFIG.db_cursor = connection.cursor()
 
-    @staticmethod
-    def init_db(db_path: str | Path | None) -> bool:
+    @classmethod
+    def check_db_exist(cls) -> bool:
+        return check_file_exist(cls._get_full_db_path())
+
+    @classmethod
+    def init_db(cls, db_path: str | Path | None) -> bool:
         """
         Создание файла базы данных и применение всех миграций.
         """
@@ -31,6 +38,10 @@ class DatabaseManager:
         CONFIG.db_path = str(db_path)
         ConfigManager.save_config(CONFIG.value)
 
-        if DatabaseManager.check_db_exist() is False:
-            create_file(DatabaseManager._get_full_db_path())
+        if cls.check_db_exist() is False:
+            create_file(cls._get_full_db_path())
+
+        cls._set_db_connection()
+        cls._apply_migrations()
+
         return True

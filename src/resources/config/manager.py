@@ -1,6 +1,6 @@
 import orjson
 
-from src.consts import CONFIG_FILE_NAME
+from src.consts import CONFIG_FILE_NAME, EXCLUDED_CONFIG_KEYS_FOR_SAVE
 from src.utils.file_utils import check_file_exist, create_file
 
 
@@ -22,5 +22,11 @@ class ConfigManager:
 
     @staticmethod
     def save_config(config_data: dict) -> None:
+        content_to_save = {
+            key: value
+            for key, value in config_data.items()
+            if key not in EXCLUDED_CONFIG_KEYS_FOR_SAVE
+        }
+
         with open(CONFIG_FILE_NAME, "wb") as settings_file:
-            settings_file.write(orjson.dumps(config_data))
+            settings_file.write(orjson.dumps(content_to_save))
