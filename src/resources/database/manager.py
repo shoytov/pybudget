@@ -7,7 +7,7 @@ from pathlib import Path
 from loguru import logger
 
 from src.consts import DB_FILE_NAME
-from src.exceptions import DatabaseConnectionNotExistError
+from src.exceptions import DatabaseConnectionNotExistError, DatabaseInitializationError
 from src.resources.config.manager import ConfigManager
 from src.resources.core import CONFIG
 from src.resources.database.migrations.initial import InitialMigration
@@ -17,7 +17,11 @@ from src.utils.file_utils import check_file_exist, create_file
 class DatabaseManager:
     @classmethod
     def _get_full_db_path(cls) -> str:
-        return os.path.join(CONFIG.db_path, DB_FILE_NAME)  # type: ignore
+        try:
+            return os.path.join(CONFIG.db_path, DB_FILE_NAME)  # type: ignore
+        except TypeError as e:
+            logger.error(e)
+            raise DatabaseInitializationError()
 
     @classmethod
     def _get_applied_migrations(cls) -> list[str]:
@@ -44,7 +48,6 @@ class DatabaseManager:
 
         new_migrations = cls._get_migrations_for_apply()
         for migration in new_migrations:
-            importlib.invalidate_caches()
             module = importlib.import_module(
                 f"src.resources.database.migrations.migrations_items.{migration}"
             )

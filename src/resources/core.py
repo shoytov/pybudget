@@ -38,6 +38,10 @@ class Config:
     def db_connection(self, value: Connection) -> None:
         self._value["db_connection"] = value
 
+    @db_connection.deleter
+    def db_connection(self) -> None:
+        del self._value["db_connection"]
+
     @property
     def db_cursor(self) -> Cursor | None:
         return self._value.get("db_cursor")
@@ -45,6 +49,10 @@ class Config:
     @db_cursor.setter
     def db_cursor(self, cursor: Cursor) -> None:
         self._value["db_cursor"] = cursor
+
+    @db_cursor.deleter
+    def db_cursor(self) -> None:
+        del self._value["db_cursor"]
 
 
 CONFIG = Config.get_instance()
