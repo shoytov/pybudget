@@ -315,3 +315,4 @@ pyrightconfig.json
 
 *.sqlite
 config.json
+logs.txt

@@ -6,9 +6,11 @@ from textual.widgets import Footer, Header
 from textual_fspicker import SelectDirectory
 
 from src.consts import UI_DB_SET_LABEL_MESSAGE
+from src.exceptions import DatabaseInitializationError
 from src.resources.core import CONFIG
 from src.resources.database.manager import DatabaseManager
 from src.ui.screens import DbWarningScreen
+from loguru import logger
 
 
 class BudgetApp(App):
@@ -18,8 +20,10 @@ class BudgetApp(App):
         Binding("Q", "quit", "Quit"),
     ]
 
-    def db_select_dir_callback(self, path: Path | None):
-        DatabaseManager.init_db(path)
+    def db_select_dir_callback(self, path: Path | None) -> None:
+        result = DatabaseManager.init_db(path)
+        if result is False:
+            raise DatabaseInitializationError()
 
     def set_db_path_callback(self) -> None:
         self.push_screen(
@@ -29,6 +33,7 @@ class BudgetApp(App):
     def on_ready(self) -> None:
         # если в конфиге отсутствует путь к файлу sqlite
         if not CONFIG.db_path:
+            logger.info(CONFIG.db_path)
             self.push_screen(DbWarningScreen(), self.set_db_path_callback())
         else:
             DatabaseManager.init_db(CONFIG.db_path)

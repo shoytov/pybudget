@@ -1,4 +1,5 @@
-from src.resources.core import DownResources, InitResources
+from src.resources.down import DownResources
+from src.resources.up import InitResources
 from src.ui.ui_app import BudgetApp
 
 

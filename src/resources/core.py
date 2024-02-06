@@ -1,6 +1,4 @@
-from sqlite3 import Cursor
-
-from src.resources.config.manager import ConfigManager
+from sqlite3 import Connection, Cursor
 
 
 class Config:
@@ -33,7 +31,15 @@ class Config:
         self._value["db_path"] = path
 
     @property
-    def db_cursor(self):
+    def db_connection(self) -> Connection | None:
+        return self._value.get("db_connection")
+
+    @db_connection.setter
+    def db_connection(self, value: Connection) -> None:
+        self._value["db_connection"] = value
+
+    @property
+    def db_cursor(self) -> Cursor | None:
         return self._value.get("db_cursor")
 
     @db_cursor.setter
@@ -42,23 +48,3 @@ class Config:
 
 
 CONFIG = Config.get_instance()
-
-
-class InitResources:
-    def __init__(self) -> None:
-        self._init_config()
-
-    def _init_config(self) -> None:
-        global CONFIG
-
-        CONFIG.value = ConfigManager.get_config()
-
-
-class DownResources:
-    def __init__(self) -> None:
-        self._close_config()
-
-    def _close_config(self) -> None:
-        global CONFIG
-
-        ConfigManager.save_config(CONFIG.value)

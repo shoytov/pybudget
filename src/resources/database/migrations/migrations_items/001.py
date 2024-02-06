@@ -2,18 +2,20 @@ from src.resources.database.migrations.base import BaseMigration
 from src.utils.decorators import transaction_decorator
 
 
-class InitialMigration(BaseMigration):
-    name = "initial"
-    number = 0
+class CategoriesMigration(BaseMigration):
+    name = "001.py"
+    number = 1
 
     @transaction_decorator
     def execute(self):  # type: ignore
         self.cursor.executescript(
             """
-            CREATE TABLE IF NOT EXISTS migrations
+            CREATE TABLE IF NOT EXISTS categories
             (id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT not null,
-            created TEXT not null);
-            CREATE UNIQUE INDEX IF NOT EXISTS migrations_name_uindex ON migrations (name);
-            """
+            icon TEXT,
+            parent_id INTEGER);
+            CREATE UNIQUE INDEX IF NOT EXISTS categories_name_uindex ON categories (name);
+        """
         )
+        self._add_migration(self.name)
