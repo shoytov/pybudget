@@ -14,7 +14,8 @@ class CategoriesMigration(BaseMigration):
             (id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT not null,
             icon TEXT,
-            parent_id INTEGER);
+            parent_id INTEGER,
+            is_income BOOLEAN NOT NULL CHECK (is_income IN (0, 1)));
             CREATE UNIQUE INDEX IF NOT EXISTS categories_name_uindex ON categories (name);
         """
         )

@@ -10,7 +10,6 @@ from src.exceptions import DatabaseInitializationError
 from src.resources.core import CONFIG
 from src.resources.database.manager import DatabaseManager
 from src.ui.screens import DbWarningScreen
-from loguru import logger
 
 
 class BudgetApp(App):
@@ -33,7 +32,6 @@ class BudgetApp(App):
     def on_ready(self) -> None:
         # если в конфиге отсутствует путь к файлу sqlite
         if not CONFIG.db_path:
-            logger.info(CONFIG.db_path)
             self.push_screen(DbWarningScreen(), self.set_db_path_callback())
         else:
             DatabaseManager.init_db(CONFIG.db_path)

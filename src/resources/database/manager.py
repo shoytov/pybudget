@@ -24,29 +24,34 @@ class DatabaseManager:
             raise DatabaseInitializationError()
 
     @classmethod
-    def _get_applied_migrations(cls) -> list[str]:
+    def _get_applied_migrations(cls) -> list[str] | list:
         CONFIG.db_cursor.execute("SELECT name from migrations;")  # type: ignore
         applied_migrations = CONFIG.db_cursor.fetchall()  # type: ignore
-        return [migration for migration in applied_migrations]
+        result = []
+        for migration in applied_migrations:
+            result.append(dict(migration).get("name"))
+        return result
 
     @classmethod
-    def _get_migrations_for_apply(cls) -> list[str]:
+    def _get_migrations_for_apply(cls) -> list[str] | list:
         modules = os.listdir(
             os.path.join("src", "resources", "database", "migrations", "migrations_items")
         )
-        return [
+        res = [
             module[:-3]
             for module in modules
             if module not in cls._get_applied_migrations()
             and module != "__init__.py"
-            and os.path.isfile(module)
+            and module != "__pycache__"
         ]
+        return res
 
     @classmethod
     def _apply_migrations(cls) -> None:
         InitialMigration().execute()  # type: ignore
 
         new_migrations = cls._get_migrations_for_apply()
+
         for migration in new_migrations:
             module = importlib.import_module(
                 f"src.resources.database.migrations.migrations_items.{migration}"
@@ -63,6 +68,7 @@ class DatabaseManager:
     @classmethod
     def _set_db_connection(cls) -> None:
         connection = sqlite3.connect(cls._get_full_db_path(), isolation_level=None)
+        connection.row_factory = sqlite3.Row
         CONFIG.db_connection = connection
         CONFIG.db_cursor = connection.cursor()
 

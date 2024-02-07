@@ -24,7 +24,7 @@ class TestDatabaseManager:
     @patch("src.resources.core.CONFIG.db_cursor")
     def test_get_applied_migrations_with_valid_db_cursor(self, mock_db_cursor):
         mock_db_cursor.execute.return_value = None
-        mock_db_cursor.fetchall.return_value = ["migration_1", "migration_2"]
+        mock_db_cursor.fetchall.return_value = [{"name": "migration_1"}, {"name": "migration_2"}]
         expected_migrations = ["migration_1", "migration_2"]
         result_migrations = DatabaseManager._get_applied_migrations()
         assert result_migrations == expected_migrations
