@@ -14,8 +14,8 @@ class BaseMigration(ABC):
 
     def _add_migration(self, migration_name: str) -> None:
         self.cursor.execute(
-            "INSERT INTO migrations (name, created) values (?, ?);",
-            (migration_name, str(int(time()))),
+            "INSERT INTO migrations (name, created_at) values (?, ?);",
+            (migration_name, int(time())),
         )
 
     @abstractmethod

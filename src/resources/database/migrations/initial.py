@@ -13,7 +13,7 @@ class InitialMigration(BaseMigration):
             CREATE TABLE IF NOT EXISTS migrations
             (id INTEGER PRIMARY KEY AUTOINCREMENT,
             name TEXT not null,
-            created TEXT not null);
+            created_at INTEGER);
             CREATE UNIQUE INDEX IF NOT EXISTS migrations_name_uindex ON migrations (name);
             """
         )
