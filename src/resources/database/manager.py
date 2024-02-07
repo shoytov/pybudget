@@ -10,6 +10,7 @@ from src.consts import DB_FILE_NAME
 from src.exceptions import DatabaseConnectionNotExistError, DatabaseInitializationError
 from src.resources.config.manager import ConfigManager
 from src.resources.core import CONFIG
+from src.resources.database.api.migrations import MigrationsApi
 from src.resources.database.migrations.initial import InitialMigration
 from src.utils.file_utils import check_file_exist, create_file
 
@@ -25,10 +26,10 @@ class DatabaseManager:
 
     @classmethod
     def _get_applied_migrations(cls) -> list[str] | list:
-        CONFIG.db_cursor.execute("SELECT name from migrations;")  # type: ignore
-        applied_migrations = CONFIG.db_cursor.fetchall()  # type: ignore
+        applied_migrations = MigrationsApi.get_applied_migrations()
         result = []
         for migration in applied_migrations:
+            logger.info(type(migration))
             result.append(dict(migration).get("name"))
         return result
 

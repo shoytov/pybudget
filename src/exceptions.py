@@ -4,3 +4,7 @@ class DatabaseInitializationError(ValueError):
 
 class DatabaseConnectionNotExistError(ValueError):
     pass
+
+
+class DatabaseCursorNotExistError(ValueError):
+    pass

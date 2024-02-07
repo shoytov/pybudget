@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
-from time import time
 from sqlite3 import Cursor
+from time import time
 
+from src.exceptions import DatabaseCursorNotExistError
 from src.resources.core import CONFIG
+from src.resources.database.api.migrations import MigrationsApi
 
 
 class BaseMigration(ABC):
@@ -10,13 +12,10 @@ class BaseMigration(ABC):
         if CONFIG.db_cursor is not None:
             self.cursor: Cursor = CONFIG.db_cursor
         else:
-            raise ValueError("Cursor is None")
+            raise DatabaseCursorNotExistError
 
     def _add_migration(self, migration_name: str) -> None:
-        self.cursor.execute(
-            "INSERT INTO migrations (name, created_at) values (?, ?);",
-            (migration_name, int(time())),
-        )
+        MigrationsApi.add_migration(migration_name, int(time()))
 
     @abstractmethod
     def execute(self):
