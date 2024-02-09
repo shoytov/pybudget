@@ -3,6 +3,7 @@ from typing import Callable
 
 from loguru import logger
 
+from src.exceptions import TransactionError
 from src.resources.core import CONFIG
 
 
@@ -15,6 +16,7 @@ def transaction_decorator(func: Callable):
         except Exception as e:
             CONFIG.db_connection.rollback()  # type: ignore
             logger.error(e)
+            raise TransactionError
         else:
             return result
 

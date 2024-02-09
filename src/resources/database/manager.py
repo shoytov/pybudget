@@ -29,7 +29,6 @@ class DatabaseManager:
         applied_migrations = MigrationsApi.get_applied_migrations()
         result = []
         for migration in applied_migrations:
-            logger.info(type(migration))
             result.append(dict(migration).get("name"))
         return result
 

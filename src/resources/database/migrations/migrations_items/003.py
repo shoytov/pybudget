@@ -12,7 +12,8 @@ class AccountsTransactionsTablesMigration(BaseMigration):
             """
             CREATE TABLE IF NOT EXISTS accounts
             (id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT UNIQUE, balance REAL);
+            name TEXT UNIQUE,
+            balance REAL DEFAULT 0);
 
             CREATE TABLE IF NOT EXISTS transactions
             (id INTEGER PRIMARY KEY AUTOINCREMENT,

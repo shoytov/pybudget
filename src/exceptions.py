@@ -8,3 +8,7 @@ class DatabaseConnectionNotExistError(ValueError):
 
 class DatabaseCursorNotExistError(ValueError):
     pass
+
+
+class TransactionError(ValueError):
+    pass
