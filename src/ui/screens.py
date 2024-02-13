@@ -11,29 +11,10 @@ from src.consts import (
     UI_ADD_ACCOUNT_LABEL_MESSAGE,
     UI_ADD_ACCOUNT_LABEL_TITLE,
     UI_BUTTON_OK_LABEL,
-    UI_DB_PATH_NOT_DEFINED_WARNING_MESSAGE,
-    UI_DB_PATH_SET_BUTTON_MESSAGE,
     UI_INCORRECT_ACCOUNT_NAME_LABEL_MESSAGE,
     UI_INCORRECT_AMOUNT_VALUE_LABEL_MESSAGE,
     UI_NOT_ACCOUNTS_MESSAGE,
 )
-
-
-class DbWarningScreen(Screen):
-    """
-    Экран с предупреждением о необходимости задать путь к файлу с БД.
-    """
-
-    def on_button_pressed(self) -> None:
-        self.dismiss()
-
-    def compose(self) -> ComposeResult:
-        yield Header()
-        yield Footer()
-        yield Center(Label(UI_DB_PATH_NOT_DEFINED_WARNING_MESSAGE))
-        yield Center(
-            Button(label=UI_DB_PATH_SET_BUTTON_MESSAGE, variant="success", id="db_set_button")
-        )
 
 
 class WarningScreenCommon(ModalScreen):
@@ -47,9 +28,11 @@ class WarningScreenCommon(ModalScreen):
         id: str | None = None,
         classes: str | None = None,
         message_to_show: str = "",
+        button_label: str = UI_BUTTON_OK_LABEL,
     ) -> None:
         super().__init__(name, id, classes)
         self.message_to_show = message_to_show
+        self.button_label = button_label
 
     def on_button_pressed(self) -> None:
         self.dismiss()
@@ -57,7 +40,7 @@ class WarningScreenCommon(ModalScreen):
     def compose(self) -> ComposeResult:
         with Container():
             yield Center(Label(self.message_to_show))
-            yield Center(Button(label=UI_BUTTON_OK_LABEL))
+            yield Center(Button(label=self.button_label))
 
 
 class AddAccountScreen(Screen):
@@ -85,6 +68,7 @@ class AddAccountScreen(Screen):
                 WarningScreenCommon(message_to_show=UI_INCORRECT_AMOUNT_VALUE_LABEL_MESSAGE)
             )
         AccountsManager.add_account(self.account_name.value, self.account_initial_value.value)
+        self.dismiss()
 
     def compose(self) -> ComposeResult:
         self.account_name = Input(placeholder=UI_ADD_ACCOUNT_INPUT_PLACEHOLDER)

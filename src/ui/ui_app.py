@@ -6,11 +6,16 @@ from textual.widgets import Footer, Header
 from textual_fspicker import SelectDirectory
 
 from src.accounting.managers import AccountsManager
-from src.consts import UI_APP_TITLE, UI_DB_SET_LABEL_MESSAGE
+from src.consts import (
+    UI_APP_TITLE,
+    UI_DB_PATH_NOT_DEFINED_WARNING_MESSAGE,
+    UI_DB_PATH_SET_BUTTON_MESSAGE,
+    UI_DB_SET_LABEL_MESSAGE,
+)
 from src.exceptions import DatabaseInitializationError
 from src.resources.core import CONFIG
 from src.resources.database.manager import DatabaseManager
-from src.ui.screens import AddAccountScreen, DbWarningScreen
+from src.ui.screens import AddAccountScreen, WarningScreenCommon
 
 
 class BudgetApp(App):
@@ -34,7 +39,13 @@ class BudgetApp(App):
     def on_ready(self) -> None:
         # если в конфиге отсутствует путь к файлу sqlite
         if not CONFIG.db_path:
-            self.push_screen(DbWarningScreen(), self.set_db_path_callback())
+            self.push_screen(
+                WarningScreenCommon(
+                    message_to_show=UI_DB_PATH_NOT_DEFINED_WARNING_MESSAGE,
+                    button_label=UI_DB_PATH_SET_BUTTON_MESSAGE,
+                ),
+                self.set_db_path_callback(),
+            )
         else:
             DatabaseManager.init_db(CONFIG.db_path)
 
