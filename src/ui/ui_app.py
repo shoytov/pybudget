@@ -15,7 +15,8 @@ from src.consts import (
 from src.exceptions import DatabaseInitializationError
 from src.resources.core import CONFIG
 from src.resources.database.manager import DatabaseManager
-from src.ui.screens import AddAccountScreen, WarningScreenCommon
+from src.ui.screens.accounts import AccountsScreen, AddAccountScreen
+from src.ui.screens.warnings import WarningScreenCommon
 
 
 class BudgetApp(App):
@@ -25,11 +26,17 @@ class BudgetApp(App):
         Binding("Q", "quit", "Quit"),
     ]
 
+    def show_accounts_screen(self) -> None:
+        self.push_screen(AccountsScreen())
+
     def db_select_dir_callback(self, path: Path | None) -> None:
         result = DatabaseManager.init_db(path)
         if result is False:
             raise DatabaseInitializationError()
-        self.push_screen(AddAccountScreen(is_first_account=True))
+        self.push_screen(
+            AddAccountScreen(is_first_account=True),
+            callback=self.show_accounts_screen,  # type: ignore
+        )
 
     def set_db_path_callback(self) -> None:
         self.push_screen(
@@ -52,6 +59,8 @@ class BudgetApp(App):
             accounts = AccountsManager.get_all_accounts()
             if not len(accounts):
                 self.push_screen(AddAccountScreen(is_first_account=True))
+            else:
+                self.show_accounts_screen()
 
     def compose(self) -> ComposeResult:
         yield Header()

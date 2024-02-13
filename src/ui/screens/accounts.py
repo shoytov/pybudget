@@ -1,6 +1,6 @@
 from textual.app import ComposeResult
-from textual.containers import Center, Container
-from textual.screen import ModalScreen, Screen
+from textual.containers import Center
+from textual.screen import Screen
 from textual.widgets import Button, Footer, Header, Input, Label
 
 from src.accounting.managers import AccountsManager, BaseMoneyManager
@@ -10,37 +10,18 @@ from src.consts import (
     UI_ADD_ACCOUNT_INPUT_PLACEHOLDER,
     UI_ADD_ACCOUNT_LABEL_MESSAGE,
     UI_ADD_ACCOUNT_LABEL_TITLE,
-    UI_BUTTON_OK_LABEL,
     UI_INCORRECT_ACCOUNT_NAME_LABEL_MESSAGE,
     UI_INCORRECT_AMOUNT_VALUE_LABEL_MESSAGE,
     UI_NOT_ACCOUNTS_MESSAGE,
 )
+from src.ui.screens.warnings import WarningScreenCommon
 
 
-class WarningScreenCommon(ModalScreen):
-    """
-    Экран для вывода информационных сообщений.
-    """
-
-    def __init__(
-        self,
-        name: str | None = None,
-        id: str | None = None,
-        classes: str | None = None,
-        message_to_show: str = "",
-        button_label: str = UI_BUTTON_OK_LABEL,
-    ) -> None:
-        super().__init__(name, id, classes)
-        self.message_to_show = message_to_show
-        self.button_label = button_label
-
-    def on_button_pressed(self) -> None:
-        self.dismiss()
-
+class AccountsScreen(Screen):
     def compose(self) -> ComposeResult:
-        with Container():
-            yield Center(Label(self.message_to_show))
-            yield Center(Button(label=self.button_label))
+        yield Header()
+        yield Footer()
+        yield Label("aasda")
 
 
 class AddAccountScreen(Screen):
