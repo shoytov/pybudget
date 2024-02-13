@@ -2,6 +2,7 @@ import importlib
 import inspect
 import os
 import sqlite3
+from decimal import Decimal
 from pathlib import Path
 
 from loguru import logger
@@ -12,6 +13,7 @@ from src.resources.config.manager import ConfigManager
 from src.resources.core import CONFIG
 from src.resources.database.api.migrations import MigrationsApi
 from src.resources.database.migrations.initial import InitialMigration
+from src.utils.converters import adapter_decimal
 from src.utils.file_utils import check_file_exist, create_file
 
 
@@ -67,6 +69,7 @@ class DatabaseManager:
 
     @classmethod
     def _set_db_connection(cls) -> None:
+        sqlite3.register_adapter(Decimal, adapter_decimal)
         connection = sqlite3.connect(cls._get_full_db_path(), isolation_level=None)
         connection.row_factory = sqlite3.Row
         CONFIG.db_connection = connection

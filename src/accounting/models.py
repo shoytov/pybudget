@@ -6,13 +6,13 @@ from src.accounting.enums import TransactionType
 
 
 class Account(BaseModel):
-    account_id: int | None = Field(alias="id")
+    account_id: int | None = Field(alias="id", default=None)
     name: str
     balance: Decimal
 
 
 class Transaction(BaseModel):
-    transaction_id: int | None = Field(alias="id")
+    transaction_id: int | None = Field(alias="id", default=None)
     transaction_type: TransactionType = Field(alias="type")
     value: Decimal
     account_id: int

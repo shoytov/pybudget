@@ -6,6 +6,8 @@ EXCLUDED_CONFIG_KEYS_FOR_SAVE = (
     "db_connection",
 )
 
+INITIAL_TRANSACTION_DESCRIPTION = "Начальное значение счета"
+
 # константы для текста в интерфейсе пользователя
 UI_APP_TITLE = "PyBudget: персональный учет денежных средств"
 UI_DB_PATH_NOT_DEFINED_WARNING_MESSAGE = (
@@ -21,3 +23,8 @@ UI_ADD_ACCOUNT_LABEL_MESSAGE = "Введите название виртуаль
 UI_ADD_ACCOUNT_BUTTON_MESSAGE = "Создать новый виртуальный счет"
 UI_ADD_ACCOUNT_INPUT_PLACEHOLDER = "Название виртуального счета"
 UI_ADD_ACCOUNT_INITIAL_VALUE_LABEL_MESSAGE = "Начальное виртуального значение счета"
+UI_INCORRECT_ACCOUNT_NAME_LABEL_MESSAGE = (
+    "Некорректное название виртуального счета" "или счет с таким названием уже существует"
+)
+UI_INCORRECT_AMOUNT_VALUE_LABEL_MESSAGE = "Некорректное числовое значение"
+UI_BUTTON_OK_LABEL = "OK"

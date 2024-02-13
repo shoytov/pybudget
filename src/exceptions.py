@@ -12,3 +12,7 @@ class DatabaseCursorNotExistError(ValueError):
 
 class TransactionError(ValueError):
     pass
+
+
+class InvalidAmountError(ValueError):
+    pass
