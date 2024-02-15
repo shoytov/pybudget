@@ -56,6 +56,14 @@ class AccountsManager:
         return [Account(**dict(account)) for account in accounts]
 
     @classmethod
+    def get_formatted_accounts(cls) -> list[tuple[str, int]]:
+        accounts = cls.get_all_accounts()
+        return [  # type: ignore
+            (f"{account.name} \t\t\t\t {account.balance}", account.account_id)
+            for account in accounts
+        ]
+
+    @classmethod
     def validate_account_name(cls, account_name: str) -> bool:
         if not account_name:
             return False

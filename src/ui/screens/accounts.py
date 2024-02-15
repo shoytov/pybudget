@@ -1,7 +1,10 @@
+from loguru import logger
+from textual import on
 from textual.app import ComposeResult
 from textual.containers import Center
-from textual.screen import Screen
-from textual.widgets import Button, Footer, Header, Input, Label
+from textual.screen import Screen, ModalScreen
+from textual.widgets import Button, Footer, Header, Input, Label, SelectionList
+from textual.widgets.selection_list import Selection
 
 from src.accounting.managers import AccountsManager, BaseMoneyManager
 from src.consts import (
@@ -10,6 +13,7 @@ from src.consts import (
     UI_ADD_ACCOUNT_INPUT_PLACEHOLDER,
     UI_ADD_ACCOUNT_LABEL_MESSAGE,
     UI_ADD_ACCOUNT_LABEL_TITLE,
+    UI_ALL_ACCOUNTS_SELECT_TITLE,
     UI_INCORRECT_ACCOUNT_NAME_LABEL_MESSAGE,
     UI_INCORRECT_AMOUNT_VALUE_LABEL_MESSAGE,
     UI_NOT_ACCOUNTS_MESSAGE,
@@ -17,14 +21,37 @@ from src.consts import (
 from src.ui.screens.warnings import WarningScreenCommon
 
 
-class AccountsScreen(Screen):
+class AccountsScreen(ModalScreen):
+    """
+    Экран с выбором виртуального счета.
+    """
+
+    def update_selection_list(self):
+        accounts_list = AccountsManager.get_formatted_accounts()
+        self.query_one(SelectionList).clear_options()
+        for account in accounts_list:
+            self.query_one(SelectionList).add_option(Selection(*account))
+
+    def on_mount(self) -> None:
+        self.query_one(SelectionList).border_title = UI_ALL_ACCOUNTS_SELECT_TITLE
+        self.update_selection_list()
+
     def compose(self) -> ComposeResult:
         yield Header()
         yield Footer()
-        yield Label("aasda")
+        yield SelectionList()
+
+    @on(SelectionList.SelectedChanged)
+    def update_selected_view(self) -> None:
+        try:
+            selected_account = self.query_one(SelectionList).selected[0]
+        except IndexError as e:
+            logger.error(e)
+        else:
+            self.dismiss(result=selected_account)
 
 
-class AddAccountScreen(Screen):
+class AddAccountScreen(ModalScreen):
     """
     Экран для добавления счета.
     """
@@ -48,8 +75,8 @@ class AddAccountScreen(Screen):
             self.app.push_screen(
                 WarningScreenCommon(message_to_show=UI_INCORRECT_AMOUNT_VALUE_LABEL_MESSAGE)
             )
-        AccountsManager.add_account(self.account_name.value, self.account_initial_value.value)
-        self.dismiss()
+        _ = AccountsManager.add_account(self.account_name.value, self.account_initial_value.value)
+        self.dismiss(result=True)
 
     def compose(self) -> ComposeResult:
         self.account_name = Input(placeholder=UI_ADD_ACCOUNT_INPUT_PLACEHOLDER)

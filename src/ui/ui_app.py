@@ -26,7 +26,7 @@ class BudgetApp(App):
         Binding("Q", "quit", "Quit"),
     ]
 
-    def show_accounts_screen(self) -> None:
+    def show_accounts_screen(self, result: bool) -> None:
         self.push_screen(AccountsScreen())
 
     def db_select_dir_callback(self, path: Path | None) -> None:
@@ -58,9 +58,12 @@ class BudgetApp(App):
 
             accounts = AccountsManager.get_all_accounts()
             if not len(accounts):
-                self.push_screen(AddAccountScreen(is_first_account=True))
+                self.push_screen(
+                    AddAccountScreen(is_first_account=True),
+                    callback=self.show_accounts_screen,
+                )
             else:
-                self.show_accounts_screen()
+                self.show_accounts_screen(True)
 
     def compose(self) -> ComposeResult:
         yield Header()
