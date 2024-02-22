@@ -20,10 +20,12 @@ class AccountsTransactionsTablesMigration(BaseMigration):
             type TEXT,
             value REAL,
             account_id INTEGER REFERENCES accounts(id),
+            category_id INTEGER REFERENCES categories(id),
             description TEXT,
             created_at INTEGER);
 
             CREATE INDEX IF NOT EXISTS accounts_id_idx ON transactions (account_id);
+            CREATE INDEX IF NOT EXISTS category_id_idx ON transactions (category_id);
             CREATE INDEX IF NOT EXISTS transactions_type_idx ON transactions (type);
         """
         )

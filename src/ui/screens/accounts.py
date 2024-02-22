@@ -2,12 +2,13 @@ from loguru import logger
 from textual import on
 from textual.app import ComposeResult
 from textual.containers import Center
-from textual.screen import Screen, ModalScreen
+from textual.screen import ModalScreen
 from textual.widgets import Button, Footer, Header, Input, Label, SelectionList
 from textual.widgets.selection_list import Selection
 
-from src.accounting.managers import AccountsManager, BaseMoneyManager
+from src.accounting.managers import AccountsManager, BaseMoneyManager, TransactionsManager
 from src.consts import (
+    UI_ACCOUNT_TRANSACTIONS_TITLE,
     UI_ADD_ACCOUNT_BUTTON_MESSAGE,
     UI_ADD_ACCOUNT_INITIAL_VALUE_LABEL_MESSAGE,
     UI_ADD_ACCOUNT_INPUT_PLACEHOLDER,
@@ -19,6 +20,44 @@ from src.consts import (
     UI_NOT_ACCOUNTS_MESSAGE,
 )
 from src.ui.screens.warnings import WarningScreenCommon
+
+
+class AccountScreen(ModalScreen):
+    """
+    Экран вирутального счета.
+    """
+
+    BINDINGS = [("escape", "close_screen", "")]
+
+    def __init__(
+        self,
+        name: str | None = None,
+        id: str | None = None,
+        classes: str | None = None,
+        account_id: str | None = None,
+    ) -> None:
+        super().__init__(name, id, classes)
+        self.account_id = account_id
+
+    def action_close_screen(self) -> None:
+        self.dismiss(True)
+
+    def update_selection_list(self):
+        transactions_list = TransactionsManager.get_account_formatted_transactions(
+            self.account_id  # type: ignore
+        )
+        self.query_one(SelectionList).clear_options()
+        for transaction in transactions_list:
+            self.query_one(SelectionList).add_option(Selection(*transaction))
+
+    def on_mount(self) -> None:
+        self.query_one(SelectionList).border_title = UI_ACCOUNT_TRANSACTIONS_TITLE
+        self.update_selection_list()
+
+    def compose(self) -> ComposeResult:
+        yield Header()
+        yield Footer()
+        yield SelectionList()
 
 
 class AccountsScreen(ModalScreen):
@@ -48,7 +87,7 @@ class AccountsScreen(ModalScreen):
         except IndexError as e:
             logger.error(e)
         else:
-            self.dismiss(result=selected_account)
+            self.dismiss(selected_account)
 
 
 class AddAccountScreen(ModalScreen):
@@ -76,7 +115,7 @@ class AddAccountScreen(ModalScreen):
                 WarningScreenCommon(message_to_show=UI_INCORRECT_AMOUNT_VALUE_LABEL_MESSAGE)
             )
         _ = AccountsManager.add_account(self.account_name.value, self.account_initial_value.value)
-        self.dismiss(result=True)
+        self.dismiss(True)
 
     def compose(self) -> ComposeResult:
         self.account_name = Input(placeholder=UI_ADD_ACCOUNT_INPUT_PLACEHOLDER)

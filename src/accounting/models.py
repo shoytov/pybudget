@@ -16,5 +16,8 @@ class Transaction(BaseModel):
     transaction_type: TransactionType = Field(alias="type")
     value: Decimal
     account_id: int
+    category_id: int
+    category_name: str
+    category_icon: str
     description: str | None
     created_at: int

@@ -7,6 +7,8 @@ EXCLUDED_CONFIG_KEYS_FOR_SAVE = (
 )
 
 INITIAL_TRANSACTION_DESCRIPTION = "Начальное значение счета"
+ACCOUNT_TRANSACTIONS_LIMIT_TO_SELECT = 100
+SELECT_LIST_TABULAR_SEPARATOR = "\t\t\t\t"
 
 # константы для текста в интерфейсе пользователя
 UI_APP_TITLE = "PyBudget: персональный учет денежных средств"
@@ -29,3 +31,4 @@ UI_INCORRECT_ACCOUNT_NAME_LABEL_MESSAGE = (
 UI_INCORRECT_AMOUNT_VALUE_LABEL_MESSAGE = "Некорректное числовое значение"
 UI_BUTTON_OK_LABEL = "OK"
 UI_ALL_ACCOUNTS_SELECT_TITLE = "Виртуальные счета"
+UI_ACCOUNT_TRANSACTIONS_TITLE = "Последние транзакции по счету"

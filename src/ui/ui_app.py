@@ -15,7 +15,7 @@ from src.consts import (
 from src.exceptions import DatabaseInitializationError
 from src.resources.core import CONFIG
 from src.resources.database.manager import DatabaseManager
-from src.ui.screens.accounts import AccountsScreen, AddAccountScreen
+from src.ui.screens.accounts import AccountsScreen, AddAccountScreen, AccountScreen
 from src.ui.screens.warnings import WarningScreenCommon
 
 
@@ -26,8 +26,11 @@ class BudgetApp(App):
         Binding("Q", "quit", "Quit"),
     ]
 
-    def show_accounts_screen(self, result: bool) -> None:
-        self.push_screen(AccountsScreen())
+    def show_selected_account_screen(self, account_id: str) -> None:
+        self.push_screen(AccountScreen(account_id=account_id), callback=self.show_accounts_screen)
+
+    def show_accounts_screen(self, _: bool) -> None:
+        self.push_screen(AccountsScreen(), callback=self.show_selected_account_screen)
 
     def db_select_dir_callback(self, path: Path | None) -> None:
         result = DatabaseManager.init_db(path)
