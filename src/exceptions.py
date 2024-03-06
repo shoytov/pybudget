@@ -16,3 +16,7 @@ class TransactionError(ValueError):
 
 class InvalidAmountError(ValueError):
     pass
+
+
+class EmptyAccountIdentifierError(ValueError):
+    pass

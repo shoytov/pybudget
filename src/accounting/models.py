@@ -21,3 +21,11 @@ class Transaction(BaseModel):
     category_icon: str
     description: str | None
     created_at: int
+
+
+class Category(BaseModel):
+    category_id: int | None = Field(alias="id", default=None)
+    name: str
+    icon: str
+    parent_id: int | None = Field(default=None)
+    is_income: bool

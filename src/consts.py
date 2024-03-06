@@ -21,14 +21,22 @@ UI_ADD_ACCOUNT_LABEL_TITLE = "Создание виртуального счет
 UI_NOT_ACCOUNTS_MESSAGE = (
     "Не добавлено ни одного вирутального счета. " "Для работы необходимо добавить хотя бы один счет"
 )
+UI_ACCOUNTS_SCREEN_LABEL_MESSAGE = "Работа с вашими вирутальными счетами"
 UI_ADD_ACCOUNT_LABEL_MESSAGE = "Введите название виртуального счета"
 UI_ADD_ACCOUNT_BUTTON_MESSAGE = "Создать новый виртуальный счет"
 UI_ADD_ACCOUNT_INPUT_PLACEHOLDER = "Название виртуального счета"
 UI_ADD_ACCOUNT_INITIAL_VALUE_LABEL_MESSAGE = "Начальное виртуального значение счета"
 UI_INCORRECT_ACCOUNT_NAME_LABEL_MESSAGE = (
-    "Некорректное название виртуального счета" "или счет с таким названием уже существует"
+    "Некорректное название виртуального счета " "или счет с таким названием уже существует"
 )
 UI_INCORRECT_AMOUNT_VALUE_LABEL_MESSAGE = "Некорректное числовое значение"
 UI_BUTTON_OK_LABEL = "OK"
 UI_ALL_ACCOUNTS_SELECT_TITLE = "Виртуальные счета"
 UI_ACCOUNT_TRANSACTIONS_TITLE = "Последние транзакции по счету"
+UI_ADD_TRANSACTION_LABEL_MESSAGE = "Добавление транзакции"
+UI_ADD_TRANSACTION_AMOUNT_INPUT_PLACEHOLDER = "Сумма операции"
+UI_ADD_TRANSACTION_DESCRIPTION_INPUT_PLACEHOLDER = "Описание операции"
+UI_CATEGORY_EXPENSE_LABEL = "Расход"
+UI_CATEGORY_INCOME_LABEL = "Приход"
+UI_CATEGORY_TRANSFER_LABEL = "Перевод между счетами"
+UI_SELECT_CATEGORY_LIST_PLACEHOLDER = "Выберите категорию"

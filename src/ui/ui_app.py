@@ -5,7 +5,7 @@ from textual.binding import Binding
 from textual.widgets import Footer, Header
 from textual_fspicker import SelectDirectory
 
-from src.accounting.managers import AccountsManager
+from src.accounting.managers.accounts import AccountsManager
 from src.consts import (
     UI_APP_TITLE,
     UI_DB_PATH_NOT_DEFINED_WARNING_MESSAGE,
@@ -15,7 +15,7 @@ from src.consts import (
 from src.exceptions import DatabaseInitializationError
 from src.resources.core import CONFIG
 from src.resources.database.manager import DatabaseManager
-from src.ui.screens.accounts import AccountsScreen, AddAccountScreen, AccountScreen
+from src.ui.screens.accounts import AccountScreen, AccountsScreen, AddAccountScreen
 from src.ui.screens.warnings import WarningScreenCommon
 
 
