@@ -35,10 +35,21 @@ class TransactionsManager:
     @classmethod
     def get_account_formatted_transactions(cls, account_id: str | int) -> list[tuple[str, int]]:
         transactions: list[Transaction] = cls.get_account_transactions(account_id)  # type: ignore
-        return [  # type: ignore
-            (
-                f"{transaction.category_icon} {transaction.category_name} {SELECT_LIST_TABULAR_SEPARATOR} {transaction.value}",
-                transaction.transaction_id,
+        result = []
+        for transaction in transactions:
+            if transaction.transaction_type == TransactionType.INCOME:
+                prefix = "+"
+            else:
+                prefix = "-"
+
+            result.append(
+                (
+                    (
+                        f"{prefix} {transaction.category_icon} {transaction.category_name} "
+                        f"{SELECT_LIST_TABULAR_SEPARATOR} {transaction.value}"
+                    ),
+                    transaction.transaction_id,
+                )
             )
-            for transaction in transactions
-        ]
+
+        return result

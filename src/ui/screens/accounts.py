@@ -52,7 +52,7 @@ class AccountScreen(ModalScreen):
         self.dismiss(True)
 
     def action_add_transaction(self) -> None:
-        self.app.push_screen(AddTransactionScreen())
+        self.app.push_screen(AddTransactionScreen(account_id=self.account_id))  # type: ignore
 
     def update_selection_list(self):
         transactions_list = TransactionsManager.get_account_formatted_transactions(

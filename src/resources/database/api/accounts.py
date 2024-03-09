@@ -7,8 +7,13 @@ from src.utils.decorators import transaction_decorator
 
 class AccountsApi:
     @classmethod
-    def get_all_accounts(cls) -> list[Row] | list:
-        query = "SELECT * FROM accounts;"
+    def get_all_accounts(cls, excluded_accounts_ids: tuple[int] | tuple = ()) -> list[Row] | list:
+        if not excluded_accounts_ids:
+            postfix = "1"
+        else:
+            excluded_ids = ",".join(map(str, excluded_accounts_ids))
+            postfix = f"id NOT IN ({excluded_ids})"
+        query = f"SELECT * FROM accounts WHERE {postfix};"
         CONFIG.db_cursor.execute(query)  # type: ignore
         accounts = CONFIG.db_cursor.fetchall()  # type: ignore
         return accounts

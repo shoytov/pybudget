@@ -14,8 +14,10 @@ from src.resources.database.api.accounts import AccountsApi
 
 class AccountsManager:
     @classmethod
-    def get_all_accounts(cls) -> list[Account] | list:
-        accounts = AccountsApi.get_all_accounts()
+    def get_all_accounts(
+        cls, excluded_accounts_ids: tuple[int] | tuple = ()
+    ) -> list[Account] | list:
+        accounts = AccountsApi.get_all_accounts(excluded_accounts_ids)
         return [Account(**dict(account)) for account in accounts]
 
     @classmethod
@@ -27,6 +29,15 @@ class AccountsManager:
                 account.account_id,
             )
             for account in accounts
+        ]
+
+    @classmethod
+    def get_formatted_accounts_with_excluded(
+        cls, excluded_accounts_ids: tuple[int] | tuple = ()
+    ) -> list[tuple[int, str]]:
+        return [  # type: ignore
+            (f"{account.name}", account.account_id)
+            for account in cls.get_all_accounts(excluded_accounts_ids)
         ]
 
     @classmethod
