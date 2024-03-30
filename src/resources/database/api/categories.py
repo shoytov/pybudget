@@ -1,5 +1,6 @@
 from sqlite3 import Row
 
+from src.accounting.models import Category
 from src.resources.core import CONFIG
 
 
@@ -17,3 +18,12 @@ class CategoriesApi:
         CONFIG.db_cursor.execute(query, params)  # type: ignore
         categories = CONFIG.db_cursor.fetchall()  # type: ignore
         return categories
+
+    @classmethod
+    def get_category(cls, category_id: str | int) -> Category | None:
+        query = "SELECT * FROM categories WHERE id=$1;"
+        CONFIG.db_cursor.execute(query, (category_id,))  # type: ignore
+        category = CONFIG.db_cursor.fetchone()  # type: ignore
+        if category:
+            result = Category(**dict(category))
+            return result

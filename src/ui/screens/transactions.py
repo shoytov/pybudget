@@ -5,19 +5,23 @@ from textual.screen import ModalScreen
 from textual.widgets import Button, Footer, Header, Input, Label, Select, Tab, Tabs
 
 from src.accounting.managers.accounts import AccountsManager
+from src.accounting.managers.base import BaseMoneyManager
 from src.accounting.managers.categories import CategoriesManager
 from src.consts import (
     UI_ADD_TRANSACTION_AMOUNT_INPUT_PLACEHOLDER,
     UI_ADD_TRANSACTION_DESCRIPTION_INPUT_PLACEHOLDER,
     UI_ADD_TRANSACTION_LABEL_MESSAGE,
+    UI_BAD_CATEGORY_LABEL_MESSAGE,
     UI_BUTTON_OK_LABEL,
     UI_CATEGORY_EXPENSE_LABEL,
     UI_CATEGORY_INCOME_LABEL,
     UI_CATEGORY_TRANSFER_LABEL,
+    UI_INCORRECT_AMOUNT_VALUE_LABEL_MESSAGE,
     UI_SELECT_ACCOUNT_TRANSER_LIST_PLACEHOLDER,
     UI_SELECT_CATEGORY_LIST_PLACEHOLDER,
 )
 from src.exceptions import EmptyAccountIdentifierError
+from src.ui.screens.warnings import WarningScreenCommon
 
 
 class AddTransactionScreen(ModalScreen):
@@ -48,6 +52,35 @@ class AddTransactionScreen(ModalScreen):
             prompt=UI_SELECT_ACCOUNT_TRANSER_LIST_PLACEHOLDER,
             options=[],
         )
+
+    def on_button_pressed(self) -> None:
+        if BaseMoneyManager.validate_amount(self.amount.value) is False:
+            self.app.push_screen(
+                WarningScreenCommon(message_to_show=UI_INCORRECT_AMOUNT_VALUE_LABEL_MESSAGE)
+            )
+            return
+
+        category_check = False
+        categoty_is_income = False
+        tab_label = str(self.query_one(Tabs).active_tab.label)  # type: ignore
+
+        if tab_label == UI_CATEGORY_EXPENSE_LABEL:
+            category_check = True
+            categoty_is_income = False
+        elif tab_label == UI_CATEGORY_INCOME_LABEL:
+            category_check = True
+            categoty_is_income = True
+        else:
+            category_check = False
+
+        if category_check is True:
+            if not CategoriesManager.validate_category(
+                str(self.categories.value), categoty_is_income
+            ):
+                self.app.push_screen(
+                    WarningScreenCommon(message_to_show=UI_BAD_CATEGORY_LABEL_MESSAGE)
+                )
+                return
 
     def action_close_screen(self) -> None:
         self.dismiss(True)
