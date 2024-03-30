@@ -3,7 +3,7 @@ from sqlite3 import Row
 from time import time
 
 from src.accounting.enums import TransactionType
-from src.consts import ACCOUNT_TRANSACTIONS_LIMIT_TO_SELECT
+from src.core.consts import ACCOUNT_TRANSACTIONS_LIMIT_TO_SELECT
 from src.resources.core import CONFIG
 from src.utils.decorators import transaction_decorator
 

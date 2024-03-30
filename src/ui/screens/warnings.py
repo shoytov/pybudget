@@ -3,7 +3,7 @@ from textual.containers import Center, Container
 from textual.screen import ModalScreen
 from textual.widgets import Button, Label
 
-from src.consts import UI_BUTTON_OK_LABEL
+from src.core.consts import UI_BUTTON_OK_LABEL
 
 
 class WarningScreenCommon(ModalScreen):

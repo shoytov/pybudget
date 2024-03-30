@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from src.consts import DB_FILE_NAME
+from src.core.consts import DB_FILE_NAME
 from src.exceptions import DatabaseInitializationError
 from src.resources.core import CONFIG
 from src.resources.database.manager import DatabaseManager

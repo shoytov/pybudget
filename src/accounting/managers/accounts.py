@@ -7,7 +7,7 @@ from src.accounting.enums import TransactionType
 from src.accounting.managers.base import BaseMoneyManager
 from src.accounting.managers.transactions import TransactionsManager
 from src.accounting.models import Account
-from src.consts import INITIAL_TRANSACTION_DESCRIPTION, SELECT_LIST_TABULAR_SEPARATOR
+from src.core.consts import INITIAL_TRANSACTION_DESCRIPTION, SELECT_LIST_TABULAR_SEPARATOR
 from src.exceptions import TransactionError
 from src.resources.database.api.accounts import AccountsApi
 

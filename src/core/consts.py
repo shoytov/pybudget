@@ -5,6 +5,8 @@ EXCLUDED_CONFIG_KEYS_FOR_SAVE = (
     "db_cursor",
     "db_connection",
 )
+LOGGING_LEVEL = "INFO"
+LOGGING_SERIALIZE = False
 
 INITIAL_TRANSACTION_DESCRIPTION = "Начальное значение счета"
 ACCOUNT_TRANSACTIONS_LIMIT_TO_SELECT = 100

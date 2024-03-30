@@ -3,7 +3,7 @@ from decimal import Decimal
 from loguru import logger
 
 from src.accounting.models import Transaction, TransactionType
-from src.consts import SELECT_LIST_TABULAR_SEPARATOR
+from src.core.consts import SELECT_LIST_TABULAR_SEPARATOR
 from src.exceptions import TransactionError
 from src.resources.database.api.transactions import TransactionsApi
 

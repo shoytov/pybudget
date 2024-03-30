@@ -9,7 +9,7 @@ from textual.widgets.selection_list import Selection
 from src.accounting.managers.accounts import AccountsManager
 from src.accounting.managers.base import BaseMoneyManager
 from src.accounting.managers.transactions import TransactionsManager
-from src.consts import (
+from src.core.consts import (
     UI_ACCOUNT_TRANSACTIONS_TITLE,
     UI_ACCOUNTS_SCREEN_LABEL_MESSAGE,
     UI_ADD_ACCOUNT_BUTTON_MESSAGE,

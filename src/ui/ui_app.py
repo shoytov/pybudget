@@ -6,7 +6,7 @@ from textual.widgets import Footer, Header
 from textual_fspicker import SelectDirectory
 
 from src.accounting.managers.accounts import AccountsManager
-from src.consts import (
+from src.core.consts import (
     UI_APP_TITLE,
     UI_DB_PATH_NOT_DEFINED_WARNING_MESSAGE,
     UI_DB_PATH_SET_BUTTON_MESSAGE,

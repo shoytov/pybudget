@@ -7,7 +7,7 @@ from textual.widgets import Button, Footer, Header, Input, Label, Select, Tab, T
 from src.accounting.managers.accounts import AccountsManager
 from src.accounting.managers.base import BaseMoneyManager
 from src.accounting.managers.categories import CategoriesManager
-from src.consts import (
+from src.core.consts import (
     UI_ADD_TRANSACTION_AMOUNT_INPUT_PLACEHOLDER,
     UI_ADD_TRANSACTION_DESCRIPTION_INPUT_PLACEHOLDER,
     UI_ADD_TRANSACTION_LABEL_MESSAGE,

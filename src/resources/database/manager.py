@@ -7,7 +7,7 @@ from pathlib import Path
 
 from loguru import logger
 
-from src.consts import DB_FILE_NAME
+from src.core.consts import DB_FILE_NAME
 from src.exceptions import DatabaseConnectionNotExistError, DatabaseInitializationError
 from src.resources.config.manager import ConfigManager
 from src.resources.core import CONFIG

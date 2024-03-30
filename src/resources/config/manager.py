@@ -1,6 +1,6 @@
 import orjson
 
-from src.consts import CONFIG_FILE_NAME, EXCLUDED_CONFIG_KEYS_FOR_SAVE
+from src.core.consts import CONFIG_FILE_NAME, EXCLUDED_CONFIG_KEYS_FOR_SAVE
 from src.utils.file_utils import check_file_exist, create_file
 
 
